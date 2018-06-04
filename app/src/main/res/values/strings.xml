@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">movieApp</string>
+    <!--Creating a new filter menu called Filter-->
+    <string name="movie_filter">Filter</string>
 </resources>
