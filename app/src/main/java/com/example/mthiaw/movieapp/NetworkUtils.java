@@ -132,7 +132,7 @@ public class NetworkUtils {
             JSONArray resultsArray = baseJsonResponse.getJSONArray("results");
 
             String[] results = new String[resultsArray.length()];
-            //looping through result to get the poster_path
+            //looping through results to get the poster_path
             for (int i = 0; i < resultsArray.length(); i ++){
                 JSONObject movie = resultsArray.getJSONObject(i);
                 String posterPaths = movie.getString("poster_path");
