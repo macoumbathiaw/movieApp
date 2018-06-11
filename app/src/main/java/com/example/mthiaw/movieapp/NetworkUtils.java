@@ -136,7 +136,10 @@ public class NetworkUtils {
             for (int i = 0; i < resultsArray.length(); i ++){
                 JSONObject movie = resultsArray.getJSONObject(i);
                 String posterPaths = movie.getString("poster_path");
-                results[i]= posterPaths;}
+                results[i]= posterPaths;
+
+                results.
+            }
 
             return results;
         } catch (JSONException e) {
@@ -145,3 +148,16 @@ public class NetworkUtils {
         return null;
     }
 }
+
+
+/**        private List<String> getMovieDataFromJson(String forecastJsonStr)
+ throws JSONException {
+ JSONObject movieJson = new JSONObject(forecastJsonStr);
+ JSONArray movieArray = movieJson.getJSONArray("results");
+ List<String> urls = new ArrayList<>();
+ for (int i = 0; i < movieArray.length(); i++) {
+ JSONObject movie = movieArray.getJSONObject(i);
+ urls.add("http://image.tmdb.org/t/p/w185" + movie.getString("poster_path"));
+ }
+ return urls;
+ }*/
