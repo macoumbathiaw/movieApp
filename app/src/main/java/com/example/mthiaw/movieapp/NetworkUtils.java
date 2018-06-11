@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.awt.Event;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +26,7 @@ public class NetworkUtils {
     public static final String LOG_TAG = NetworkUtils.class.getSimpleName();
 
     /**
-     * Query the TMDB dataset and return an {@link Event} object.
+     * Query the TMDB dataset and return String[] object.
      */
     public static String[] fetchMovieDataFromTMDB (String requestUrl) {
         URL url = createUrl(requestUrl);
@@ -40,13 +39,10 @@ public class NetworkUtils {
         }
 
         // Extract relevant fields from the JSON response
-        try {
+
             String[] dataFethFromTMDB = extractFeatureFromJson(jsonResponse);
             return dataFethFromTMDB;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
+
     }
 
 
@@ -123,10 +119,10 @@ public class NetworkUtils {
     }
 
     /**
-     * Return an {@link Event} object by parsing out information
+     * Return an string object by parsing out information
      * we got from the TMDB request response.
      */
-    private static String[] extractFeatureFromJson(String tmdbJson) throws JSONException{
+    private static String[] extractFeatureFromJson(String tmdbJson){
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(tmdbJson)) {
             return null;
