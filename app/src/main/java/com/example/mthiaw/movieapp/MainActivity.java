@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         //Check to see if the Network connection is available, if so, run to execute the NetworkUtils
         if(!isNetworkConnectionAvailable(MainActivity.this)){
             QuakeAsyncTask task = new QuakeAsyncTask();
-            task.execute(USGS_URL);
+            task.execute(USGS_URL+API_KEY);
         } else {
             //If the network connection is not working we will display a text saying "No Internet Connection"
             //and make the whole gridView invisible
