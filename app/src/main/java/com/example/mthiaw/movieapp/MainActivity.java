@@ -2,6 +2,8 @@ package com.example.mthiaw.movieapp;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +17,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -33,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private String TMDB_BASE_URL=
             "https://api.themoviedb.org/3/discover/movie?api_key=";
     //API_KEY declaration
-    private String API_KEY = 
+    private String API_KEY = "";
     
     
 
@@ -54,17 +58,38 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Test the ImageAdapter and GridView
-        GridView gridview = findViewById(R.id.gridview_id);
-        gridview.setColumnWidth(width);
-        gridview.setAdapter(new ImageAdapter(this));
-
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView = findViewById(R.id.gridview_id);
+        gridView.setColumnWidth(width);
+        gridView.setAdapter(new ImageAdapter(this));
+        //Click on the gridView items
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 Toast.makeText(MainActivity.this, "" + position,
                         Toast.LENGTH_SHORT).show();
             }
         });
+
+        //Check to see if the Network connection is available, if so, run to execute the NetworkUtils
+        if(!isNetworkConnectionAvailable(MainActivity.this)){
+            QuakeAsyncTask task = new QuakeAsyncTask();
+            task.execute(USGS_URL);
+        } else {
+            //If the network connection is not working we will display a text saying "No Internet Connection"
+            //and make the whole gridView invisible
+            TextView textView = new TextView(getApplicationContext());
+            RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relative_layout_id);
+            textView.setText("You are not connected to the internet");
+            if(relativeLayout.getChildCount()==1){
+                relativeLayout.addView(textView);
+            }
+            gridView.setVisibility(View.GONE);
+
+             }
+
+
+
+
 
     }
 
@@ -89,4 +114,13 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onContextItemSelected(item);
     }
+
+    //Check Network Connectivity at the Start of the App
+    public boolean isNetworkConnectionAvailable(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
+
 }
+
