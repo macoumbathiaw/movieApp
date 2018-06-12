@@ -15,6 +15,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mthiaw on 6/7/18.
@@ -22,13 +24,15 @@ import java.nio.charset.Charset;
  */
 
 public class NetworkUtils {
-    /** Tag for the log messages */
+    /**
+     * Tag for the log messages
+     */
     public static final String LOG_TAG = NetworkUtils.class.getSimpleName();
 
     /**
      * Query the TMDB dataset and return String[] object.
      */
-    public static String[] fetchMovieDataFromTMDB (String requestUrl) {
+    public static ArrayList<String> fetchMovieDataFromTMDB(String requestUrl) {
         URL url = createUrl(requestUrl);
         // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
@@ -40,15 +44,14 @@ public class NetworkUtils {
 
         // Extract relevant fields from the JSON response
 
-            String[] dataFethFromTMDB = extractFeatureFromJson(jsonResponse);
-            return dataFethFromTMDB;
+        ArrayList<String> dataFethFromTMDB = extractFeatureFromJson(jsonResponse);
+        return dataFethFromTMDB;
 
     }
 
 
-
     //Create URL
-    private static URL createUrl(String stringUrl){
+    private static URL createUrl(String stringUrl) {
         URL url = null;
         try {
             url = new URL(stringUrl);
@@ -100,6 +103,7 @@ public class NetworkUtils {
         return jsonResponse;
 
     }
+
     /**
      * Convert the {@link InputStream} into a String which contains the
      * whole JSON response from the server.
@@ -122,7 +126,7 @@ public class NetworkUtils {
      * Return an string object by parsing out information
      * we got from the TMDB request response.
      */
-    private static String[] extractFeatureFromJson(String tmdbJson){
+    private static ArrayList<String> extractFeatureFromJson(String tmdbJson) {
         // If the JSON string is empty or null, then return early.
         if (TextUtils.isEmpty(tmdbJson)) {
             return null;
@@ -131,17 +135,19 @@ public class NetworkUtils {
             JSONObject baseJsonResponse = new JSONObject(tmdbJson);
             JSONArray resultsArray = baseJsonResponse.getJSONArray("results");
 
-            String[] results = new String[resultsArray.length()];
+            //Let us create a List of Array of the image urls
+            //We could have used String array since we know that this return a fixed number of 20
+            ArrayList<String> thumbnailUrls = new ArrayList<>();
             //looping through results to get the poster_path
-            for (int i = 0; i < resultsArray.length(); i ++){
+            for (int i = 0; i < resultsArray.length(); i++) {
                 JSONObject movie = resultsArray.getJSONObject(i);
                 String posterPaths = movie.getString("poster_path");
-                results[i]= posterPaths;
+                thumbnailUrls.add("http://image.tmdb.org/t/p/w185" + posterPaths);
 
-                results.
+
             }
 
-            return results;
+            return thumbnailUrls;
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the TMDB JSON results", e);
         }
@@ -150,14 +156,3 @@ public class NetworkUtils {
 }
 
 
-/**        private List<String> getMovieDataFromJson(String forecastJsonStr)
- throws JSONException {
- JSONObject movieJson = new JSONObject(forecastJsonStr);
- JSONArray movieArray = movieJson.getJSONArray("results");
- List<String> urls = new ArrayList<>();
- for (int i = 0; i < movieArray.length(); i++) {
- JSONObject movie = movieArray.getJSONObject(i);
- urls.add("http://image.tmdb.org/t/p/w185" + movie.getString("poster_path"));
- }
- return urls;
- }*/

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -22,11 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     //Declare values
-    private int width; // this width will be more usefull when we include tablet layout in stage 2
+    private int width; // this width will be used to determine the number of images we want to see in a row
     private GridView gridView;
     private ArrayList<String> arrayListOfPosters;
     private boolean sortByPopular;
@@ -59,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Test the ImageAdapter and GridView
         gridView = findViewById(R.id.gridview_id);
+        ImageAdapter imageAdapter = new ImageAdapter(this,arrayListOfPosters);
         gridView.setColumnWidth(width);
-        gridView.setAdapter(new ImageAdapter(this));
+        gridView.setAdapter(imageAdapter);
         //Click on the gridView items
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -72,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Check to see if the Network connection is available, if so, run to execute the NetworkUtils
         if(!isNetworkConnectionAvailable(MainActivity.this)){
-            QuakeAsyncTask task = new QuakeAsyncTask();
-            task.execute(USGS_URL+API_KEY);
+            MovieAsyncTask task = new MovieAsyncTask();
+            task.execute(TMDB_BASE_URL+API_KEY);
         } else {
             //If the network connection is not working we will display a text saying "No Internet Connection"
             //and make the whole gridView invisible
@@ -91,6 +94,29 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+    //Let us create MovieAsyncTask to call the API in a background thread
+    public class MovieAsyncTask extends AsyncTask<String,Void,ArrayList<String>>{
+
+
+        @Override
+        protected ArrayList<String> doInBackground(String... strings) {
+
+
+                ArrayList<String> arrayListPosterPaths = NetworkUtils.fetchMovieDataFromTMDB(TMDB_BASE_URL+API_KEY);
+                return arrayListPosterPaths;
+            }
+
+
+
+
+        @Override
+        protected void onPostExecute(ArrayList<String> strings) {
+            if(strings !=null && !strings.isEmpty() ){
+                ImageAdapter imageAdapter = new ImageAdapter(MainActivity.this,strings);
+                gridView.setAdapter(imageAdapter);
+            }
+        }
     }
 
     

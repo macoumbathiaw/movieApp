@@ -6,15 +6,22 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
+    private ArrayList<String> posterPathsArray;
 
-    public ImageAdapter(Context c) {
-        mContext = c;
+    public ImageAdapter(Context mContext, ArrayList<String> posterPathsArray) {
+        this.mContext = mContext;
+        this.posterPathsArray = posterPathsArray;
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return posterPathsArray.size();
     }
 
     public Object getItem(int position) {
@@ -38,22 +45,11 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageResource(mThumbIds[position]);
+        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/"+posterPathsArray.get(position)).into(imageView);
+
+
         return imageView;
     }
 
-    // references to our images
-    private Integer[] mThumbIds = {
-            R.drawable.sample_2, R.drawable.sample_3,
-            R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7,
-            R.drawable.sample_0, R.drawable.sample_1,
-            R.drawable.sample_2, R.drawable.sample_3,
-            R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7,
-            R.drawable.sample_0, R.drawable.sample_1,
-            R.drawable.sample_2, R.drawable.sample_3,
-            R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7
-    };
+
 }
