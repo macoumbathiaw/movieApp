@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     //Declare values
     private int width; // this width will be used to determine the number of images we want to see in a row
     private GridView gridView;
-    private ArrayList<String> arrayListOfPosters;
+    private ArrayList<String> arrayListOfPosters = new ArrayList<String>();
     private boolean sortByPopular;
 
     
@@ -61,20 +61,20 @@ public class MainActivity extends AppCompatActivity {
 
         //Test the ImageAdapter and GridView
         gridView = findViewById(R.id.gridview_id);
-        ImageAdapter imageAdapter = new ImageAdapter(this,arrayListOfPosters);
+        ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(),arrayListOfPosters);
         gridView.setColumnWidth(width);
         gridView.setAdapter(imageAdapter);
         //Click on the gridView items
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(MainActivity.this, "" + position,
+                Toast.makeText(getApplicationContext(), "" + position,
                         Toast.LENGTH_SHORT).show();
             }
         });
 
         //Check to see if the Network connection is available, if so, run to execute the NetworkUtils
-        if(!isNetworkConnectionAvailable(MainActivity.this)){
+        if(!isNetworkConnectionAvailable(getApplicationContext())){
             MovieAsyncTask task = new MovieAsyncTask();
             task.execute(TMDB_BASE_URL+API_KEY);
         } else {
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<String> strings) {
             if(strings !=null && !strings.isEmpty() ){
-                ImageAdapter imageAdapter = new ImageAdapter(MainActivity.this,strings);
+                ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(),strings);
                 gridView.setAdapter(imageAdapter);
             }
         }
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         int menuItemSelected = item.getItemId();
         if (menuItemSelected == R.id.filter_menu){
-            Toast.makeText(this,"Filter Item Selected",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Filter Item Selected",Toast.LENGTH_SHORT).show();
         }
         return super.onContextItemSelected(item);
     }
