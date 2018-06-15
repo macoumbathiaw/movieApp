@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Check to see if the Network connection is available, if so, run to execute the NetworkUtils
-        if(!isNetworkConnectionAvailable(getApplicationContext())){
+        if(isNetworkConnectionAvailable(this)){
             MovieAsyncTask task = new MovieAsyncTask();
             task.execute(TMDB_BASE_URL+API_KEY);
         } else {
