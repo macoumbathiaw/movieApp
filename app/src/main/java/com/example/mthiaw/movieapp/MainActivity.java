@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     //Declare values
     private int width; // this width will be used to determine the number of images we want to see in a row
     private GridView gridView;
-    private ArrayList<String> arrayListOfPosters = new ArrayList<String>(8);
+    private ArrayList<String> arrayListOfPosters = new ArrayList<String>();
     private boolean sortByPopular;
 
     
