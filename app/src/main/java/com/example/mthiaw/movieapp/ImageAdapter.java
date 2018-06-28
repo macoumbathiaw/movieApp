@@ -1,8 +1,12 @@
 package com.example.mthiaw.movieapp;
 
 import android.content.Context;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
@@ -37,13 +41,37 @@ public class ImageAdapter extends BaseAdapter {
     // create a new ImageView for each item referenced by the Adapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+        //ImageView imageView;
+        ImageView imageView = new ImageView(mContext);
+
         if (convertView == null) {
+
+
+
+
+
+            WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+            Display display = windowManager.getDefaultDisplay();
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            display.getMetrics(displayMetrics);
+
+
+
+
+
+            float density = mContext.getResources().getDisplayMetrics().density;
+            float dpHeight = displayMetrics.heightPixels / density;
+            float dpWidth = displayMetrics.widthPixels /density;
+
+            int width = (int) (dpWidth);
+            int height = (int) (dpHeight);
+
+
             // if it's not recycled, initialize some attributes
-            imageView = new ImageView(mContext);
-           // imageView.setLayoutParams(new ViewGroup.LayoutParams(85, 85));
-            //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(0, 0, 0, 0);
+
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(width, height));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
         } else
 
         {

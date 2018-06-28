@@ -9,25 +9,27 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
     //Declare values
-    private int width; // this width will be used to determine the number of images we want to see in a row
+    private int numberOfColumns; // this numberOfColumns will be used to determine the number of images we want to see in a row
     private GridView gridView;
     private ArrayList<String> arrayListOfPosters = new ArrayList<String>();
     private boolean sortByPopular;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private final String TMDB_BASE_URL=
             "https://api.themoviedb.org/3/discover/movie?api_key=";
     //API_KEY declaration
-    private final String API_KEY = "d430dc6dd7def9959e7a05cf0b77e85d";
+    private final String API_KEY = "";
     
     
 
@@ -49,20 +51,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        //Getting the phone width, and placing 3 posters per row on the phone
+        //Getting the phone numberOfColumns, and placing 3 posters per row on the phone
         Display display = getWindowManager().getDefaultDisplay();
         Point pointSize = new Point();
         display.getSize(pointSize);
-        width = pointSize.x/3;
+        numberOfColumns = pointSize.x/3;
 
 
 
-
-        //Test the ImageAdapter and GridView
+        //Add imaged to the ImageAdapter
         gridView = findViewById(R.id.gridview_id);
         ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(),arrayListOfPosters);
-        gridView.setColumnWidth(width);
+        gridView.setColumnWidth(numberOfColumns);
         gridView.setAdapter(imageAdapter);
+
         //Click on the gridView items
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
