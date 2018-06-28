@@ -14,32 +14,31 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
     //Declare values
     private int width; // this width will be used to determine the number of images we want to see in a row
     private GridView gridView;
-    private ArrayList<String> arrayListOfPosters = new ArrayList<String>();
+    private ArrayList<String> arrayListOfPosters = new ArrayList<String>(8);
     private boolean sortByPopular;
 
     
     
     //Make URL
-    private String TMDB_BASE_URL=
+    private final String TMDB_BASE_URL=
             "https://api.themoviedb.org/3/discover/movie?api_key=";
     //API_KEY declaration
-    private String API_KEY = "";
+    private final String API_KEY = "d430dc6dd7def9959e7a05cf0b77e85d";
     
     
 
@@ -68,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(getApplicationContext(), "" + position,
-                        Toast.LENGTH_SHORT).show();
+                //Below is the code that allows the transition to another page
+                //through intent
             }
         });
 
@@ -77,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         if(isNetworkConnectionAvailable(this)){
             MovieAsyncTask task = new MovieAsyncTask();
             task.execute(TMDB_BASE_URL+API_KEY);
+
         } else {
             //If the network connection is not working we will display a text saying "No Internet Connection"
             //and make the whole gridView invisible
@@ -96,18 +96,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
     //Let us create MovieAsyncTask to call the API in a background thread
-    public class MovieAsyncTask extends AsyncTask<String,Void,ArrayList<String>>{
+    public class MovieAsyncTask extends AsyncTask<String, Void, ArrayList<String>> {
 
 
         @Override
         protected ArrayList<String> doInBackground(String... strings) {
 
-
-                ArrayList<String> arrayListPosterPaths = NetworkUtils.fetchMovieDataFromTMDB(TMDB_BASE_URL+API_KEY);
+                String string = strings[0];
+                ArrayList<String> arrayListPosterPaths = NetworkUtils.fetchMovieDataFromTMDB(string);
                 return arrayListPosterPaths;
             }
-
-
 
 
         @Override
@@ -115,9 +113,8 @@ public class MainActivity extends AppCompatActivity {
             if(strings !=null && !strings.isEmpty() ){
                 ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext(),strings);
                 gridView.setAdapter(imageAdapter);
-            }
         }
-    }
+    }}
 
     
     
@@ -146,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
-    }
+    }}
 
-}
+
 

@@ -41,8 +41,8 @@ public class ImageAdapter extends BaseAdapter {
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(85, 85));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+           // imageView.setLayoutParams(new ViewGroup.LayoutParams(85, 85));
+            //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(0, 0, 0, 0);
         } else
 
@@ -52,7 +52,7 @@ public class ImageAdapter extends BaseAdapter {
 
         Picasso.with(mContext).
 
-                load("http://image.tmdb.org/t/p/w185/" + mPosterPathsArray.get(position)).
+                load("http://image.tmdb.org/t/p/w185" + mPosterPathsArray.get(position)).
 
                 into(imageView);
 

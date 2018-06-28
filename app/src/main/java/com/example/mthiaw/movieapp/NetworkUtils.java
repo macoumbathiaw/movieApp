@@ -39,7 +39,7 @@ public class NetworkUtils {
         try {
             jsonResponse = makeHttpRequest(url);
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error closing input stream", e);
+            Log.d(LOG_TAG, "Error closing input stream", e);
         }
 
         // Extract relevant fields from the JSON response
@@ -56,7 +56,7 @@ public class NetworkUtils {
         try {
             url = new URL(stringUrl);
         } catch (MalformedURLException e) {
-            Log.e(LOG_TAG, "Error with creating URL ", e);
+            Log.d(LOG_TAG, "Error with creating URL ", e);
         }
         return url;
     }
@@ -88,10 +88,10 @@ public class NetworkUtils {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
-                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
+                Log.d(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the TMBD JSON results.", e);
+            Log.d(LOG_TAG, "Problem retrieving the TMBD JSON results.", e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -117,6 +117,7 @@ public class NetworkUtils {
             while (line != null) {
                 output.append(line);
                 line = reader.readLine();
+                System.out.print(output.toString());
             }
         }
         return output.toString();
@@ -142,14 +143,14 @@ public class NetworkUtils {
             for (int i = 0; i < resultsArray.length(); i++) {
                 JSONObject movie = resultsArray.getJSONObject(i);
                 String posterPaths = movie.getString("poster_path");
-                thumbnailUrls.add("http://image.tmdb.org/t/p/w185" + posterPaths);
+                thumbnailUrls.add(posterPaths);
 
 
             }
 
             return thumbnailUrls;
         } catch (JSONException e) {
-            Log.e(LOG_TAG, "Problem parsing the TMDB JSON results", e);
+            Log.d(LOG_TAG, "Problem parsing the TMDB JSON results", e);
         }
         return null;
     }
