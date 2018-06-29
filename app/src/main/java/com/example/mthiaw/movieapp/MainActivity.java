@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private final String TMDB_BASE_URL=
             "https://api.themoviedb.org/3/discover/movie?api_key=";
     //API_KEY declaration
-    private final String API_KEY = "d430dc6dd7def9959e7a05cf0b77e85d";
+    private final String API_KEY = "";
     
     
 

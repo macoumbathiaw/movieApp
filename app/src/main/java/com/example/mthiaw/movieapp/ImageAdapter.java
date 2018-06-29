@@ -20,9 +20,9 @@ import java.util.ArrayList;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<String> mPosterPathsArray;
+    private int deviceWidth;
 
-
-    private int numberOfColumns; // this numberOfColumns will be used to determine the number of images we want to see in a row
+   //1- private int numberOfColumns; // this numberOfColumns will be used to determine the number of images we want to see in a row
 
 
 
@@ -51,14 +51,14 @@ public class ImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         //ImageView imageView;
         ImageView imageView = new ImageView(mContext);
-
+        deviceWidth = new DeviceSize().getDeviceWith();
         if (convertView == null) {
 
 
 
 
 
-            WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+           /** WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
             Display display = windowManager.getDefaultDisplay();
             DisplayMetrics displayMetrics = new DisplayMetrics();
             display.getMetrics(displayMetrics);
@@ -82,7 +82,7 @@ public class ImageAdapter extends BaseAdapter {
             // if it's not recycled, initialize some attributes
 
             //imageView.setLayoutParams(new ViewGroup.LayoutParams(width, height));
-            //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);*/
 
         } else
 
@@ -95,7 +95,7 @@ public class ImageAdapter extends BaseAdapter {
                 load("http://image.tmdb.org/t/p/w185" + mPosterPathsArray.get(position))
                 //.fit()
                 //.centerCrop()
-                .resize(numberOfColumns,(int)(numberOfColumns*1.5))
+                .resize(deviceWidth,(int)(deviceWidth*1.5))
                 .into(imageView);
 
 
@@ -105,13 +105,6 @@ public class ImageAdapter extends BaseAdapter {
     }
 
 
-
-    private Drawable resizeDrawable(Drawable image)
-    {
-        Bitmap b = ((BitmapDrawable)image).getBitmap();
-        Bitmap bitmapResized = Bitmap.createScaledBitmap(b,numberOfColumns, (int)(numberOfColumns*1.5),false);
-        return new BitmapDrawable(mContext.getResources(),bitmapResized);
-    }
 }
 
 
