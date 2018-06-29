@@ -1,7 +1,10 @@
 package com.example.mthiaw.movieapp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -17,6 +20,11 @@ import java.util.ArrayList;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<String> mPosterPathsArray;
+
+
+    private int numberOfColumns; // this numberOfColumns will be used to determine the number of images we want to see in a row
+
+
 
     public ImageAdapter(Context context, ArrayList<String> posterPathsArray) {
         this.mContext = context;
@@ -67,10 +75,14 @@ public class ImageAdapter extends BaseAdapter {
             int height = (int) (dpHeight);
 
 
+            Point pointSize = new Point();
+            display.getSize(pointSize);
+            numberOfColumns =  pointSize.x/3;
+
             // if it's not recycled, initialize some attributes
 
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(width, height));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            //imageView.setLayoutParams(new ViewGroup.LayoutParams(width, height));
+            //imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
         } else
 
@@ -80,14 +92,25 @@ public class ImageAdapter extends BaseAdapter {
 
         Picasso.with(mContext).
 
-                load("http://image.tmdb.org/t/p/w185" + mPosterPathsArray.get(position)).
-
-                into(imageView);
+                load("http://image.tmdb.org/t/p/w185" + mPosterPathsArray.get(position))
+                //.fit()
+                //.centerCrop()
+                .resize(numberOfColumns,(int)(numberOfColumns*1.5))
+                .into(imageView);
 
 
         return imageView;
 
 
+    }
+
+
+
+    private Drawable resizeDrawable(Drawable image)
+    {
+        Bitmap b = ((BitmapDrawable)image).getBitmap();
+        Bitmap bitmapResized = Bitmap.createScaledBitmap(b,numberOfColumns, (int)(numberOfColumns*1.5),false);
+        return new BitmapDrawable(mContext.getResources(),bitmapResized);
     }
 }
 
