@@ -10,9 +10,8 @@ import com.example.mthiaw.movieapp.MainActivity;
 
 public class DeviceSize {
 
-    private int deviceWith;//The deviceWidth value will give us the number of columns in UI when displaying the movie
-    Context mContext;
     Point pointSize;
+    private int deviceWith;//The deviceWidth value will give us the number of columns in UI when displaying the movie thumbnails
 
 
     public DeviceSize() {
@@ -20,9 +19,7 @@ public class DeviceSize {
     }
 
 
-
-
-    public int getDeviceWith() {
+    public int getDeviceWidth(Context mContext) {
 
         //Getting the device size
         WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
@@ -38,35 +35,25 @@ public class DeviceSize {
 
         float density = mContext.getResources().getDisplayMetrics().density;
         float dpHeight = displayMetrics.heightPixels / density;
-        float dpWidth = displayMetrics.widthPixels /density;
+        float dpWidth = displayMetrics.widthPixels / density;
 
         int width = (int) (dpWidth);
         int height = (int) (dpHeight);
 
         int smallestWidth = Math.min(width, height);
 
-
-        if(smallestWidth > 600 || smallestWidth > 720)
-        {
+        //Checking smallestWidth value against
+        if (smallestWidth > 600 || smallestWidth > 720) {
             //The below values (3 & 6) will give us the number of columns in UI when displaying the movie
-            deviceWith = size.x/6;
-        }
-        else deviceWith=size.x/3;
-
-
+            deviceWith = size.x / 6;
+        } else deviceWith = size.x / 3;
 
         return deviceWith;
     }
 
 
-
     public Point getPointSize() {
-        Point pointSize = new Point();
+        pointSize = new Point();
         return pointSize;
     }
-
-
-
-
-
 }

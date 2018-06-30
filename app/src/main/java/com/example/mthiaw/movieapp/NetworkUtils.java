@@ -144,8 +144,6 @@ public class NetworkUtils {
                 JSONObject movie = resultsArray.getJSONObject(i);
                 String posterPaths = movie.getString("poster_path");
                 thumbnailUrls.add(posterPaths);
-
-
             }
 
             return thumbnailUrls;
