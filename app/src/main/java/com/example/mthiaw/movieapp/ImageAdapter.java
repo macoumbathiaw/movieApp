@@ -15,6 +15,7 @@ public class ImageAdapter extends BaseAdapter {
     private ArrayList<String> mPosterPathsArray;
     private int deviceWidth;
 
+    //Constructor
     public ImageAdapter(Context context, ArrayList<String> posterPathsArray) {
         this.mContext = context;
         this.mPosterPathsArray = posterPathsArray;
@@ -63,6 +64,11 @@ public class ImageAdapter extends BaseAdapter {
         return imageView;
 
 
+    }
+
+    //Clear the list of poster path
+    public void clearList() {
+        mPosterPathsArray.clear();
     }
 
 

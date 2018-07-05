@@ -42,9 +42,9 @@ public class DeviceSize {
 
         int smallestWidth = Math.min(width, height);
 
-        //Checking smallestWidth value against
+        //Checking smallestWidth value against the standard phone and tablet size
         if (smallestWidth > 600 || smallestWidth > 720) {
-            //The below values (3 & 6) will give us the number of columns in UI when displaying the movie
+            //The below values (3 & 6) will also give us the number of columns in UI when displaying the movie
             deviceWith = size.x / 6;
         } else deviceWith = size.x / 3;
 
